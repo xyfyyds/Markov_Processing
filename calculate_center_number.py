@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # 从CSV文件中读取数据
 file_path = './data_generated/price_of_DE_LU_cleaned.csv'  # 替换为你的CSV文件路径
-data = pd.read_csv(file_path)
+data = pd.read_csv(file_path, nrows=15000)
 
 # 提取第三列数据
 feature_column = 2  # 假设第三列索引为2，Python中索引从0开始
