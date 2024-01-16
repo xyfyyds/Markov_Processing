@@ -3,7 +3,7 @@ import pandas as pd
 input_csv_file = '../dataset/opsd-time_series-2020-10-06/time_series_60min_singleindex.csv'
 df = pd.read_csv(input_csv_file)
 
-selected_columns = ['utc_timestamp', 'cet_cest_timestamp', 'DE_LU_price_day_ahead']  # 将 'ColumnName2' 替换为实际的第二列名称
+selected_columns = ['utc_timestamp', 'cet_cest_timestamp', 'DE_LU_price_day_ahead']
 
 selected_data = df[selected_columns]
 
