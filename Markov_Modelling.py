@@ -45,7 +45,7 @@ print(transition_matrix)
 num_steps = 500
 
 # Initial state (choose one of the unique states)
-initial_state = 82  # For example, choose the second state
+initial_state = 76
 
 # Store the predicted states
 predicted_states = [initial_state]
@@ -70,9 +70,10 @@ plt.plot(predicted_states, label='predicted data')
 df = pd.read_csv(file_path)
 
 column_index = 3
-data_to_plot = df.iloc[500:1001, column_index]
+data_to_plot = df.iloc[501:1001, column_index]
+print(data_to_plot[0:10])
 
-plt.plot(range(0, 501), data_to_plot, label='original data')
+plt.plot(range(0, 500), data_to_plot, label='original data')
 
 # 添加标签和标题
 plt.xlabel('Row Index')
