@@ -42,7 +42,7 @@ print(transition_matrix)
 ######### predict the future states ###########
 
 # Number of steps to predict
-num_steps = 500
+num_steps = 2500
 
 # Initial state (choose one of the unique states)
 initial_state = 41
@@ -62,7 +62,7 @@ for i in range(len(predicted_states)):
 
 print("Predicted States:" + str(predicted_states))
 
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(20, 12))
 # Plot the predicted states
 plt.plot(predicted_states, label='predicted price')
 
@@ -70,12 +70,12 @@ plt.plot(predicted_states, label='predicted price')
 df = pd.read_csv('./data_generated/price_of_DE_LU_cleaned.csv')
 
 column_index = 2
-data_to_plot = df.iloc[15000:15501, column_index]
+data_to_plot = df.iloc[15000:17501, column_index]
 
-plt.plot(range(0, 501), data_to_plot, label='real price')
+plt.plot(range(0, 2501), data_to_plot, label='real price')
 
-plt.xlabel('Row Index')
-plt.ylabel('Times of changes of states')
+plt.xlabel('Times of changes of states')
+plt.ylabel('Price')
 plt.title('Comparison of Data after the 15000th row')
 plt.legend()
 
