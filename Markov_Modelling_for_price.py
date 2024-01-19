@@ -42,7 +42,7 @@ print(transition_matrix)
 ######### predict the future states ###########
 
 # Number of steps to predict
-num_steps = 2500
+num_steps = 2502
 
 Initial_value = 26.53
 initial_state = 0
@@ -52,6 +52,7 @@ for n in range(len(unique_states)):
         initial_state = n
         break
 print("Initial state:", initial_state)
+print("Initial value:", unique_states[initial_state])
 
 # Store the predicted states
 predicted_states = [initial_state]
@@ -76,17 +77,17 @@ plt.plot(predicted_states, label='predicted price')
 df = pd.read_csv('./data_generated/price/price_of_DE_LU_cleaned.csv')
 
 column_index = 2
-data_to_plot = df.iloc[15000:17501, column_index]
+data_to_plot = df.iloc[14999:17501, column_index]
+print("Initial data:" + str(data_to_plot.values[0]))
 
 # Calculate the average absolute difference between the predicted states and the original states
 diff = 0
-r = 2500
-for i in range(r):
+for i in range(num_steps):
     diff += abs(predicted_states[i] - data_to_plot.values[i])
-print("Average Absolute Difference:", diff / r)
+print("Average Absolute Difference:", diff / num_steps)
 
 # Plot the original states
-plt.plot(range(0, 2501), data_to_plot, label='real price')
+plt.plot(range(0, 2502), data_to_plot, label='real price')
 
 plt.xlabel('Times of changes of states')
 plt.ylabel('Price')
