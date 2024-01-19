@@ -18,33 +18,41 @@ X = features.values.reshape(-1, 1)
 inertia_values = []
 k_values = range(1, 101)
 
-for k in k_values:
-    kmeans = KMeans(n_clusters=k)
-    kmeans.fit(X)
-    inertia_values.append(kmeans.inertia_)
-
-plt.figure(figsize=(40, 24))
-plt.plot(k_values, inertia_values, marker='o')
-plt.xlabel('Number of Clusters (k)')
-plt.ylabel('Inertia')
-plt.title('Elbow Method')
-plt.show()
+# for k in k_values:
+#     kmeans = KMeans(n_clusters=k)
+#     kmeans.fit(X)
+#     inertia_values.append(kmeans.inertia_)
+#
+# plt.figure(figsize=(40, 24))
+# plt.plot(k_values, inertia_values, marker='o')
+# plt.xlabel('Number of Clusters (k)')
+# plt.ylabel('Inertia')
+# plt.title('Elbow Method')
+# plt.show()
 
 # 通过轮廓系数选择最优聚类数
 silhouette_scores = []
 
-for k in k_values[1:]:  # 从2开始
-    kmeans = KMeans(n_clusters=k)
+
+for i in range(1,10):
+    kmeans = KMeans(n_clusters=3600)
     kmeans.fit(X)
     labels = kmeans.labels_
     score = silhouette_score(X, labels)
-    silhouette_scores.append(score)
+    print(score)
 
-plt.figure(figsize=(40, 24))
-plt.plot(k_values[1:], silhouette_scores, marker='o')  # 注意这里从2开始
-plt.xlabel('Number of Clusters (k)')
-plt.ylabel('Silhouette Score')
-plt.title('Silhouette Score Method')
-plt.show()
+# for k in k_values[1:]:  # 从2开始
+#     kmeans = KMeans(n_clusters=k)
+#     kmeans.fit(X)
+#     labels = kmeans.labels_
+#     score = silhouette_score(X, labels)
+#     silhouette_scores.append(score)
+#
+# plt.figure(figsize=(40, 24))
+# plt.plot(k_values[1:], silhouette_scores, marker='o')  # 注意这里从2开始
+# plt.xlabel('Number of Clusters (k)')
+# plt.ylabel('Silhouette Score')
+# plt.title('Silhouette Score Method')
+# plt.show()
 
 
