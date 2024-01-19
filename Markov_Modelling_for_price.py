@@ -67,7 +67,7 @@ plt.figure(figsize=(20, 12))
 plt.plot(predicted_states, label='predicted price')
 
 # Plot the original states
-df = pd.read_csv('./data_generated/price_of_DE_LU_cleaned.csv')
+df = pd.read_csv('./data_generated/price/price_of_DE_LU_cleaned.csv')
 
 column_index = 2
 data_to_plot = df.iloc[15000:17501, column_index]

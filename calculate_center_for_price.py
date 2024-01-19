@@ -49,5 +49,5 @@ plt.legend()
 plt.show()
 
 # 将结果存回CSV文件
-output_file_path = './data_generated/cluster_data.csv'  # 替换为输出的CSV文件路径
+output_file_path = './data_generated/price/cluster_data.csv'  # 替换为输出的CSV文件路径
 data.to_csv(output_file_path, index=False)
