@@ -21,7 +21,7 @@ for i, res in enumerate(residential_list):
 
     print("sixth generation")
 
-################### claer the empty data #####################
+################### clear the empty data #####################
 
 file_path = ['./data_generated/residential_power/power_of_residential_1.csv', './data_generated/residential_power/power_of_residential_2.csv', './data_generated/residential_power/power_of_residential_3.csv',
              './data_generated/residential_power/power_of_residential_4.csv', './data_generated/residential_power/power_of_residential_5.csv', './data_generated/residential_power/power_of_residential_6.csv']
