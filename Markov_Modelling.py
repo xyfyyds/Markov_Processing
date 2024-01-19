@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 ######### generate the transition matrix ###########
 
 # read from csv file
-file_path = './data_generated/cluster_data.csv'
+file_path = './data_generated/price/cluster_data.csv'
 data = pd.read_csv(file_path)
 
 # select the 4th column as the input data

@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 从CSV文件中读取数据
-file_path = './data_generated/price_of_DE_LU_cleaned.csv'  # 替换为你的CSV文件路径
+file_path = './data_generated/price/price_of_DE_LU_cleaned.csv'  # 替换为你的CSV文件路径
 data = pd.read_csv(file_path)
 
 # 将第一列时间列转换为datetime类型
