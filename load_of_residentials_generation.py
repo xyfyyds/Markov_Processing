@@ -59,13 +59,29 @@ selected_data.to_csv(output_csv_file, index=False)
 
 print("sixth generation")
 
-###################claer the empty data#####################
+################### claer the empty data #####################
 
 file_path = ['./data_generated/residential_power/power_of_residential_1.csv', './data_generated/residential_power/power_of_residential_2.csv', './data_generated/residential_power/power_of_residential_3.csv',
              './data_generated/residential_power/power_of_residential_4.csv', './data_generated/residential_power/power_of_residential_5.csv', './data_generated/residential_power/power_of_residential_6.csv']
+
 for file in file_path:
     data = pd.read_csv(file)
     data = data.dropna(subset=data.columns[1:], how='all')
     data.to_csv(file, index=False)
     print(file + " is cleared")
+
+################### calculate the changes #####################
+
+for f in file_path:
+    data = pd.read_csv(f)
+    diff_data = pd.DataFrame()
+    diff_data[data.columns[0]] = data[data.columns[0]]
+
+    for column in data.columns[1:]:
+        diff_data[column] = data[column].diff()
+
+    diff_data.to_csv(f[:-4] + '_change.csv', index=False)
+    print(f + " is calculated")
+
+
 
