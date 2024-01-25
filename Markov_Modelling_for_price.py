@@ -81,10 +81,15 @@ data_to_plot = df.iloc[14999:17501, column_index]
 print("Initial data:" + str(data_to_plot.values[0]))
 
 # Calculate the average absolute difference between the predicted states and the original states
-diff = 0
+diff_abs = 0
 for i in range(num_steps):
-    diff += abs(predicted_states[i] - data_to_plot.values[i])
-print("Average Absolute Difference:", diff / num_steps)
+    diff_abs += abs(predicted_states[i] - data_to_plot.values[i])
+print("Average Absolute Difference:", diff_abs / num_steps)
+
+diff_total = 0
+for i in range(num_steps):
+    diff_total += (predicted_states[i] - data_to_plot.values[i])
+print("Average total Difference:", diff_total / num_steps)
 
 # Plot the original states
 plt.plot(range(0, 2502), data_to_plot, label='real price')
