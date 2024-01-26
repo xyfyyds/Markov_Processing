@@ -80,16 +80,43 @@ column_index = 2
 data_to_plot = df.iloc[14999:17501, column_index]
 print("Initial data:" + str(data_to_plot.values[0]))
 
-# Calculate the average absolute difference between the predicted states and the original states
+### Comparison between predicted states and the original states in several methods of simulation ###
+
+# the average absolute difference between the predicted states and the original states
 diff_abs = 0
 for i in range(num_steps):
     diff_abs += abs(predicted_states[i] - data_to_plot.values[i])
-print("Average Absolute Difference:", diff_abs / num_steps)
+print("Average Absolute Difference: ", diff_abs / num_steps)
 
+# the average difference between the predicted states and the original states
 diff_total = 0
 for i in range(num_steps):
     diff_total += (predicted_states[i] - data_to_plot.values[i])
-print("Average total Difference:", diff_total / num_steps)
+print("Average total Difference: ", diff_total / num_steps)
+
+# the percentage of difference within 20% between the predicted states and the original states predicted together
+diff_per = 0
+count = 0
+for i in range(num_steps):
+    diff_per = abs(predicted_states[i] - data_to_plot.values[i])
+    if diff_per <= abs(data_to_plot.values[i] * 0.2):
+        count += 1
+print("Percentage of Difference within 20% predicted once: ", str((count / num_steps) * 100) + "%")
+
+# the percentage of difference within 20% between the predicted states and the original states predicted one by one
+diff_1by1 = 0
+count_1by1 = 0
+for i in range(len(data_to_plot)):
+    initial_data = unique_states[np.abs(unique_states - data_to_plot.values[i]).argmin()]
+    current_state_index = np.where(unique_states == initial_data)[0][0]
+    next_state_probs = transition_matrix[current_state_index, :]
+    next_state = np.random.choice(np.arange(0, len(next_state_probs)), p=next_state_probs)
+    diff_1by1 = abs(unique_states[next_state] - data_to_plot.values[i])
+    if diff_1by1 <= abs(data_to_plot.values[i] * 0.2):
+        count_1by1 += 1
+print("Percentage of Difference within 20% predicted one by one: ", str((count_1by1 / len(data_to_plot)) * 100) + "%")
+
+########## Finish Comparison ##########
 
 # Plot the original states
 plt.plot(range(0, 2502), data_to_plot, label='real price')
