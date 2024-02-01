@@ -51,3 +51,27 @@ for hour in initial_hour_list:
 print(transition_matrix_list)
 
 #########      generation completed      ###########
+
+# Above is the transition matrix for each hour, now select the hour 12 as test set.
+diff_1by1 = 0
+count_1by1 = 0
+initial_states = df[df['Hour'] == 11]['DE_KN_residential1_pv']
+unique_initial_states = df[df['Hour'] == 11]['pv_states'].unique()
+print(unique_initial_states)
+next_states = df[df['Hour'] == 12]['DE_KN_residential1_pv']
+unique_next_states = df[df['Hour'] == 12]['pv_states'].unique()
+print(unique_next_states)
+for i in range(len(initial_states)):
+    initial_data = unique_initial_states[np.abs(unique_initial_states - initial_states.iloc[i]).argmin()]
+    print("initial_data: ", initial_data)
+    current_state_index = np.where(unique_initial_states == initial_data)[0][0]
+    next_state_probs = transition_matrix_list[11][current_state_index, :]
+    expectation_next_state = 0
+    for j in range(len(next_state_probs)):
+        expectation_next_state += next_state_probs[j] * unique_next_states[j]
+    print("expectation_next_state: ", expectation_next_state)
+    print("next_states.iloc[" + str(i) + "]: ", next_states.iloc[i])
+    diff_1by1 = abs(expectation_next_state - next_states.iloc[i])
+    if diff_1by1 <= abs(next_states.iloc[i] * 0.2):
+        count_1by1 += 1
+print("Percentage of Difference within 20% predicted one by one: ", str((count_1by1 / len(initial_states)) * 100) + "%")
