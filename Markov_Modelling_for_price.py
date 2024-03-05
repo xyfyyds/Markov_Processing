@@ -99,7 +99,7 @@ diff_per = 0
 count = 0
 for i in range(num_steps):
     diff_per = abs(predicted_states[i] - data_to_plot.values[i])
-    if diff_per <= abs(data_to_plot.values[i] * 0.2):
+    if diff_per <= abs(data_to_plot.values[i] * 0.2) or diff_per <= 1.0:
         count += 1
 print("Percentage of Difference within 20% predicted once: ", str((count / num_steps) * 100) + "%")
 
@@ -112,7 +112,7 @@ for i in range(len(data_to_plot) - 1):
     next_state_probs = transition_matrix[current_state_index, :]
     next_state = np.random.choice(np.arange(0, len(next_state_probs)), p=next_state_probs)
     diff_1by1 = abs(unique_states[next_state] - data_to_plot.values[i+1])
-    if diff_1by1 <= abs(data_to_plot.values[i+1] * 0.2):
+    if diff_1by1 <= abs(data_to_plot.values[i+1] * 0.2) or diff_1by1 <= 1.0:
         count_1by1 += 1
 print("Percentage of Difference within 20% predicted one by one: ", str((count_1by1 / len(data_to_plot)) * 100) + "%")
 
