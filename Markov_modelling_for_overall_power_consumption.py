@@ -169,7 +169,7 @@ plt.plot(range(0, 15000), data_to_plot, label='real price')
 
 plt.xlabel('Times of changes of states')
 plt.ylabel('Price')
-plt.title('Comparison of Data after the 15000th row')
+plt.title('Comparison of Data')
 plt.legend()
 
 plt.show()
