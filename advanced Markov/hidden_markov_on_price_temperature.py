@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from hmmlearn import hmm
 
 # 从CSV文件中读取数据
 file_path = '../data_generated/weather/temperature_price_states.csv'  # 替换为你的CSV文件路径
@@ -35,10 +36,6 @@ print(np.count_nonzero(mask))
 
 observations = data['price_state']
 unique_observations = np.unique(observations)
-print(unique_observations[114])
-print(unique_observations[117])
-print(unique_observations[120])
-print(unique_observations[121])
 num_observations = len(unique_observations)
 
 observations_matrix = np.zeros((num_states, num_observations))
@@ -57,3 +54,38 @@ print(np.count_nonzero(mask))
 # select the initial state probability vector 2020.9.28 23:00
 pi = transition_matrix[np.where(unique_states == 9.4)[0][0]]
 print(pi)
+
+
+# HMM model by python package hmmlearn
+model = hmm.CategoricalHMM(n_components=num_states)
+model.startprob_ = pi
+model.transmat_ = transition_matrix
+model.emissionprob_ = observations_matrix
+model.n_features = num_observations
+ob_list = [[2, 3], [2, 56], [12,2]]
+for i in ob_list:
+    prob = model.score([i])
+    print(f"log_prob_{i}:", prob)
+
+
+# forward algorithm
+obs_seq = [2,3]
+def forward():
+    alpha = pi * observations_matrix[:, obs_seq[0]]
+    for obs in obs_seq[1:]:
+        alpha = np.dot(alpha, transition_matrix) * observations_matrix[:, obs]
+    return np.sum(alpha)
+
+
+def backward():
+    obs_len = len(obs_seq)
+    beta = np.ones_like(observations_matrix[:, 0])
+    for i in list(range(0, obs_len - 1))[::-1]:
+        obs = obs_seq[i + 1]
+        beta = np.dot(transition_matrix, observations_matrix[:, obs] * beta)
+    return np.sum(pi * observations_matrix[:, obs_seq[0]] * beta)
+
+res_forward = forward()
+print(f"res_forward={res_forward}")
+res_backward = backward()
+print(f"res_backward={res_backward}")
