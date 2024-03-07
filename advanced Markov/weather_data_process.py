@@ -40,6 +40,11 @@ for row in data_lines:
     date_obj = datetime.strptime(date_str, '%Y%m%d%H:%M')
     row[1] = date_obj
 
+for row in data_lines:
+    date_str = row[8]
+    date_obj = datetime.strptime(date_str, '%Y%m%d%H:%M')
+    row[8] = date_obj
+
 # 写入CSV文件
 with open('../data_generated/weather/solar.csv', 'w', newline='') as csv_file:
     csv_writer = csv.writer(csv_file)
@@ -64,4 +69,23 @@ cleaned_df = merged_df[['Time', 'DK_1_price_day_ahead', 'temperature']].dropna(s
 
 # 将合并结果写入新的CSV文件
 cleaned_df.to_csv('../data_generated/weather/temperature_price.csv', index=False)
+
+
+df_a = pd.read_csv('../data_generated/weather/solar.csv', parse_dates=[1])
+df_b = pd.read_csv('../data_generated/residential_power/pv_residential_1.csv', parse_dates=[0])
+
+df_a['Time'] = pd.to_datetime(df_a['MESS_DATUM_WOZ'])
+df_a['Time'] = df_a['Time'] - pd.Timedelta(hours=1)
+print(df_a['Time'])
+df_b['Time_'] = pd.to_datetime(df_b['utc_timestamp']).dt.tz_localize(None)
+print(df_b['Time_'])
+
+
+# 根据时间列合并两个DataFrame，根据A文件的"x"列和B文件的"y"列进行匹配
+merged_df = pd.merge(df_a, df_b, left_on=['Time'], right_on=['Time_'], how='inner')
+
+cleaned_df = merged_df[['Time', 'ATMO_LBERG', 'FD_LBERG', 'FG_LBERG', 'SD_LBERG', 'DE_KN_residential1_pv']]
+
+# 将合并结果写入新的CSV文件
+cleaned_df.to_csv('../data_generated/weather/solar_generation.csv', index=False)
 
