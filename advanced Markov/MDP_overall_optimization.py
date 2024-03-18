@@ -1,29 +1,58 @@
 import numpy as np
+import pandas as pd
 
-
-num_price_states = 20  # 电价状态数量
 num_consumption_states = 15  # 消耗状态数量
 num_solar_power_states = 20  # 太阳能状态数量
-states = [(b, p, q) for b in range(num_price_states) for p in range(num_consumption_states) for q in range(num_solar_power_states)]  # 状态空间
-actions = [0, 1, 2]  # 行动空间：0充电，1保持，2放电
 
-# 随机生成电价状态转换矩阵
-price_transition_matrix = np.random.rand(num_price_states, num_price_states)
-price_transition_matrix = price_transition_matrix / price_transition_matrix.sum(axis=1)[:, None]  # 归一化
+# 生成电价状态转换矩阵
+def price_TM_generation(file_path, state_column):
+    file_path = file_path
+    data = pd.read_csv(file_path)
 
-# 随机生成电价状态转换矩阵
+    state_column = state_column
+    all_prices = data.iloc[:, state_column]
+
+    # obtain the unique states, that is unique values in the 4th column
+    unique_states = np.unique(all_prices)
+
+    # set up the transition matrix, initially all zeros
+    num_states = len(unique_states)
+    transition_matrix = np.zeros((num_states, num_states))
+
+    # statistics the transition times
+    for i in range(len(all_prices) - 1):
+        current_state = all_prices.iloc[i]
+        next_state = all_prices.iloc[i + 1]
+        current_index = np.where(unique_states == current_state)[0][0]
+        next_index = np.where(unique_states == next_state)[0][0]
+        transition_matrix[current_index, next_index] += 1
+
+    # normalize the transition matrix, in order to have the possibility of each transition
+    # for position (n,m), the value is the possibility of state n to state m, index from 0
+    transition_matrix = transition_matrix / np.sum(transition_matrix, axis=1, keepdims=True)
+
+    # print the states and matrix
+    print("prices States:", unique_states)
+    print(" Prices Transition Matrix:")
+    print(transition_matrix)
+
+    return num_states, unique_states, transition_matrix
+
+num_prices_states, prices, price_transition_matrix = price_TM_generation('../data_generated/price/cluster_data.csv', 3)
+
 consumption_transition_matrix = np.random.rand(num_consumption_states, num_consumption_states)
-consumption_transition_matrix = consumption_transition_matrix / consumption_transition_matrix.sum(axis=1)[:, None]  # 归一化
+consumption_transition_matrix = consumption_transition_matrix / consumption_transition_matrix.sum(axis=1)[:, None]
 
-# 随机生成电价状态转换矩阵
 solar_power_transition_matrix = np.random.rand(num_solar_power_states, num_solar_power_states)
-solar_power_transition_matrix = solar_power_transition_matrix / solar_power_transition_matrix.sum(axis=1)[:, None]  # 归一化
+solar_power_transition_matrix = solar_power_transition_matrix / solar_power_transition_matrix.sum(axis=1)[:, None]
 
-# 生成电价值，假设为0到1之间的均匀分布
-prices = np.linspace(-10, 60, num_price_states)
 consumption = np.linspace(0, 15, num_consumption_states)
 solar_power = np.linspace(0, 5, num_solar_power_states)
 battery_level = 0
+
+
+states = [(b, p, q) for b in range(num_prices_states) for p in range(num_consumption_states) for q in range(num_solar_power_states)]  # 状态空间
+actions = [0, 1, 2]  # 行动空间：0充电，1保持，2放电
 
 # 初始化Q表
 Q = np.zeros((len(states), len(actions)))
@@ -46,7 +75,7 @@ def get_reward(battery_level, price_state, demand_state, solar_state, action):
         reward = -price * (demand - solar_production)
 
     # 更新状态
-    price_state = np.random.choice(num_price_states, p=price_transition_matrix[price_state])
+    price_state = np.random.choice(num_prices_states, p=price_transition_matrix[price_state])
     demand_state = np.random.choice(num_consumption_states, p=consumption_transition_matrix[demand_state])
     solar_state = np.random.choice(num_solar_power_states, p=solar_power_transition_matrix[solar_state])
 
@@ -61,7 +90,7 @@ gamma = 0.9  # 折扣因子
 
 for episode in range(episodes):
     # 随机初始化状态
-    price_state, consumption_state, solar_power_state = np.random.choice(num_price_states), np.random.choice(num_consumption_states), np.random.choice(num_solar_power_states)
+    price_state, consumption_state, solar_power_state = np.random.choice(num_prices_states), np.random.choice(num_consumption_states), np.random.choice(num_solar_power_states)
     state_index = states.index((price_state, consumption_state, solar_power_state))  # 状态索引
     battery_state = 0  # 电池状态
     done = False
@@ -83,6 +112,8 @@ for episode in range(episodes):
         state_index = next_state_index
 
         i += 1
+        if battery_state >= 200:
+            break
 
 
 # 显示部分更新后的Q表

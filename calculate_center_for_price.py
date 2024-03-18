@@ -15,7 +15,7 @@ features = data.iloc[:, feature_column]
 X = features.values.reshape(-1, 1)
 
 # 设置聚类数
-k = 3600
+k = 100
 
 # 使用K均值聚类
 kmeans = KMeans(n_clusters=k)
