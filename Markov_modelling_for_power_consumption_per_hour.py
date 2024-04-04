@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
@@ -124,6 +125,9 @@ print(transition_matrix_list)
 # Above is the transition matrix for each hour, now select the hour 3/4 as test set.
 diff_1by1 = 0
 count_1by1 = 0
+simulation_results = []
+real_data = []
+overall_difference = 0
 initial_states = df[df['Hour'] == 3]['total_consumption']
 unique_initial_states = df[df['Hour'] == 3]['consumption_states_per_hour'].unique()
 print(unique_initial_states)
@@ -135,13 +139,30 @@ for i in range(len(initial_states)):
     print("initial_data: ", initial_data)
     current_state_index = np.where(unique_initial_states == initial_data)[0][0]
     next_state_probs = transition_matrix_list[3][current_state_index, :]
-    # expectation_next_state = 0
-    # for j in range(len(next_state_probs)):
-    #     expectation_next_state += next_state_probs[j] * unique_next_states[j]
+    expectation_next_state = 0
+    for j in range(len(next_state_probs)):
+        expectation_next_state += next_state_probs[j] * unique_next_states[j]
     expectation_next_state = unique_next_states[np.random.choice(np.arange(0, len(next_state_probs)), p=next_state_probs)]
+    simulation_results.append(expectation_next_state)
+    real_data.append(next_states.iloc[i])
     print("expectation_next_state: ", expectation_next_state)
     print("next_states.iloc[" + str(i) + "]: ", next_states.iloc[i])
     diff_1by1 = abs(expectation_next_state - next_states.iloc[i])
+    overall_difference += diff_1by1
     if diff_1by1 <= abs(next_states.iloc[i] * 0.2):
         count_1by1 += 1
 print("Percentage of Difference within 20% predicted one by one: ", str((count_1by1 / len(initial_states)) * 100) + "%")
+print("Overall Difference: ", overall_difference / len(initial_states))
+
+plt.figure(figsize=(20, 12))
+# Plot the predicted states
+plt.plot(simulation_results[:200], label='simulation')
+# Plot the original states
+plt.plot(real_data[:200], label='real price')
+
+plt.xlabel('Times of transitions')
+plt.ylabel('Price')
+plt.title('Comparison')
+plt.legend()
+
+plt.show()

@@ -134,9 +134,9 @@ for i in range(len(predicted_states)):
 
 # print("Predicted States:" + str(predicted_states))
 
-plt.figure(figsize=(20, 12))
-# Plot the predicted states
-plt.plot(predicted_states, label='predicted price')
+# plt.figure(figsize=(20, 12))
+# # Plot the predicted states
+# plt.plot(predicted_states, label='predicted price')
 
 # Read the original states
 df = pd.read_csv('./data_generated/residential_power/power_consumption_residential_1.csv')
@@ -154,22 +154,42 @@ print("Average Absolute Difference: ", diff_abs / num_steps)
 # the percentage of difference within 20% between the predicted states and the original states predicted one by one
 diff_1by1 = 0
 count_1by1 = 0
+simulation_results = []
+real_data = []
+overall_difference = 0
 for i in range(len(data_to_plot) - 1):
     initial_data = unique_states[np.abs(unique_states - data_to_plot.values[i]).argmin()]
     current_state_index = np.where(unique_states == initial_data)[0][0]
     next_state_probs = transition_matrix[current_state_index, :]
     next_state = np.random.choice(np.arange(0, len(next_state_probs)), p=next_state_probs)
+    simulation_results.append(unique_states[next_state])
+    real_data.append(data_to_plot.values[i+1])
     diff_1by1 = abs(unique_states[next_state] - data_to_plot.values[i+1])
+    overall_difference += diff_1by1
     if diff_1by1 <= abs(data_to_plot.values[i+1] * 0.2):
         count_1by1 += 1
 print("Percentage of Difference within 20% predicted one by one: ", str((count_1by1 / len(data_to_plot)) * 100) + "%")
+print("Overall Difference: ", overall_difference/len(data_to_plot))
 
+plt.figure(figsize=(20, 12))
+# Plot the predicted states
+plt.plot(simulation_results, label='simulation')
 # Plot the original states
-plt.plot(range(0, 15000), data_to_plot, label='real price')
+plt.plot(real_data, label='real price')
 
-plt.xlabel('Times of changes of states')
+plt.xlabel('Times of transitions')
 plt.ylabel('Price')
-plt.title('Comparison of Data')
+plt.title('Comparison')
 plt.legend()
 
 plt.show()
+
+# Plot the original states
+# plt.plot(range(0, 15000), data_to_plot, label='real price')
+#
+# plt.xlabel('Times of changes of states')
+# plt.ylabel('Price')
+# plt.title('Comparison of Data')
+# plt.legend()
+#
+# plt.show()
