@@ -173,9 +173,9 @@ print("Overall Difference: ", overall_difference/len(data_to_plot))
 
 plt.figure(figsize=(20, 12))
 # Plot the predicted states
-plt.plot(simulation_results, label='simulation')
+plt.plot(simulation_results[:100], label='simulation')
 # Plot the original states
-plt.plot(real_data, label='real price')
+plt.plot(real_data[:100], label='real demand')
 
 plt.xlabel('Times of transitions')
 plt.ylabel('Price')

@@ -87,9 +87,9 @@ print("Overall Difference: ", overall_difference/len(initial_states))
 
 plt.figure(figsize=(20, 12))
 # Plot the predicted states
-plt.plot(simulation_results[:100], label='simulation')
+plt.plot(simulation_results, label='simulation')
 # Plot the original states
-plt.plot(real_data[:100], label='real price')
+plt.plot(real_data, label='real data')
 
 plt.xlabel('Times of transitions')
 plt.ylabel('Price')

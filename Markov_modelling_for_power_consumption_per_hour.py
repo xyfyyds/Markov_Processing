@@ -158,7 +158,7 @@ plt.figure(figsize=(20, 12))
 # Plot the predicted states
 plt.plot(simulation_results[:200], label='simulation')
 # Plot the original states
-plt.plot(real_data[:200], label='real price')
+plt.plot(real_data[:200], label='real demand')
 
 plt.xlabel('Times of transitions')
 plt.ylabel('Price')
