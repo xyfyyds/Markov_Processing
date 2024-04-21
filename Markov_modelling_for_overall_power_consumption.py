@@ -11,7 +11,6 @@ from sklearn.metrics import silhouette_score
 file_path = './data_generated/residential_power/power_consumption_residential_1.csv'  # 替换为你的CSV文件路径
 data = pd.read_csv(file_path)
 
-# 提取第五列数据
 feature_column = 5
 features = data.iloc[:, feature_column]
 
@@ -19,7 +18,6 @@ print(features)
 
 X = features.values.reshape(-1, 1)
 
-# 通过轮廓系数选择最优聚类数
 silhouette_scores = []
 k_values = range(1, 101)
 

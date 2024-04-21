@@ -1,12 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-# 加载CSV文件
+
+'''
+    testa nd plot the result
+'''
+
 df = pd.read_csv('./optimization_data.csv')
 
-# 如果日期时间不仅包含日期，还包含时间，需要将其转换为日期
 df['Date'] = pd.to_datetime(df['Time']).dt.date
 
-# 按日期分组
 grouped = df.groupby('Date')
 
 all = 0
@@ -15,7 +17,7 @@ saving_cost = 0
 original_costs = []
 Markov_costs = []
 savings = 0.0
-# 对每个日期的第五列和第六列分别计算总和，并比较
+
 for date, group in grouped:
     sum_ori = group['original_cost'].sum()
     sum_Markov = group['new_cost'].sum()
@@ -35,6 +37,7 @@ print('The average saving rate: ', savings/all * 100, '%')
 
 plt.figure(figsize=(20, 12))
 
+# Plot the first 100 lines of data, can be changed to plot the whole data
 plt.plot(original_costs[:100], label='Original costs')
 plt.plot(Markov_costs[:100], label='Markov costs')
 

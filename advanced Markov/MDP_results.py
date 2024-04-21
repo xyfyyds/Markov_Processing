@@ -1,8 +1,12 @@
 import numpy as np
 import pandas as pd
+
+'''
+    apply MDP strategy on the data, to learn if cost is reduced
+'''
+
 from dateutil.relativedelta import relativedelta
 
-# # 读取三个CSV文件
 # df1 = pd.read_csv('../data_generated/price/cluster_data.csv')
 # df2 = pd.read_csv('../data_generated/weather/solar_power_states.csv')
 # df3 = pd.read_csv('../data_generated/residential_power/consumption_data.csv')
@@ -23,7 +27,6 @@ from dateutil.relativedelta import relativedelta
 #
 # merged_df.to_csv('../data_generated/residential_power/overall_data.csv', index=False)
 
-# 生成电价状态转换矩阵
 def price_TM_generation(file_path, state_column):
     file_path = file_path
     data = pd.read_csv(file_path)

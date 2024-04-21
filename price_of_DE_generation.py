@@ -17,7 +17,6 @@ print("first generation")
 ####################################################################################
 column_to_check = 'DE_LU_price_day_ahead'
 
-# 清除指定列中值为空的行
 df_cleaned = df.dropna(subset=[column_to_check])
 
 output_csv_file = './data_generated/price/price_of_DE_LU_cleaned.csv'

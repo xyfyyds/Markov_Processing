@@ -3,7 +3,10 @@ import pandas as pd
 from hmmlearn import hmm
 from matplotlib import pyplot as plt
 
-# 从CSV文件中读取数据
+'''
+    HMM model for the price and temperature states, hmm package is used but commented out
+'''
+
 file_path = '../data_generated/weather/temperature_price_states.csv'  # 替换为你的CSV文件路径
 data = pd.read_csv(file_path)
 

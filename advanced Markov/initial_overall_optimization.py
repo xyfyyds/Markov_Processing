@@ -1,6 +1,9 @@
 import itertools
-
 import pandas as pd
+
+'''
+    Initial overall optimization
+'''
 
 # Define the possible values each element in the array can take
 possible_values = [-1, 0, 1]
@@ -10,17 +13,20 @@ dd = list(itertools.product(possible_values, repeat=12))
 for item in dd:
     decisions.append(list(item))
 
-file_path = '../data_generated/weather/temperature_price_states.csv'  # 替换为你的CSV文件路径
+# learn the price states
+file_path = '../data_generated/weather/temperature_price_states.csv'
 data = pd.read_csv(file_path)
 price = data['DK_1_price_day_ahead'][66:78].values
 print(price)
 
-file_path = '../data_generated/residential_power/per_pc_residential_1.csv'  # 替换为你的CSV文件路径
+# learn the consumption states
+file_path = '../data_generated/residential_power/per_pc_residential_1.csv'
 data = pd.read_csv(file_path)
 consumption = (data['total_consumption'][0:12] * 6).values
 print(consumption)
 
-file_path = '../data_generated/residential_power/pv_residential_1.csv'  # 替换为你的CSV文件路径
+# learn the solar power states
+file_path = '../data_generated/residential_power/pv_residential_1.csv'
 data = pd.read_csv(file_path)
 s = data['DE_KN_residential1_pv'][8:20]
 solar_power = s.values

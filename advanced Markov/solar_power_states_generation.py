@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('../data_generated/weather/solar_generation.csv', parse_dates=[0])  # 假设第一列是时间列，并确保其被解析为日期时间格式
+df = pd.read_csv('../data_generated/weather/solar_generation.csv', parse_dates=[0])
 
 for date in df['Time'].dt.date.unique():
     daily_data = df[df['Time'].dt.date == date]

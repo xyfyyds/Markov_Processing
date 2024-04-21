@@ -3,6 +3,10 @@ import numpy as np
 from hmmlearn import hmm
 from matplotlib import pyplot as plt
 
+'''
+    HMM model for the solar power states, hmm package is used but commented out
+'''
+
 file_path = '../data_generated/weather/solar_power_states.csv'
 df = pd.read_csv(file_path)
 
